@@ -14,7 +14,9 @@ def createFamily(fk,fi):
     f = open('assets/families/'+fk+'.html', 'w')
     f.write('<!DOCTYPE html><html><head> <link rel="stylesheet" type="text/css" href="../index.css"></head>\n')
     f.write('<h1> Código da familia: ' + fk + '</h1>')
-    print(fi.items())
+    keys = fi.keys()
+    values = fi.values()
+    print(keys[0])
     f.close()
 
 

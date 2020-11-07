@@ -10,11 +10,9 @@ indPath = "individuals"
 famPath = "families"
 cssPath = "assets/gedcom.css"
 
-def createFamily(fk,fi):
-    f = open('assets/families/'+fk+'.html', 'w')
-    f.write('<!DOCTYPE html><html><head> <link rel="stylesheet" type="text/css" href="../index.css"></head>\n')
-    f.write('<h1> Código da familia: ' + fk + '</h1>')
-    print(fi.items())
+def createFamily(famkey,faminfo)
+    f = open('assets/'+famkey+'.html', 'w')
+    f.write('<!DOCTYPE html><html><head> <link rel="stylesheet" type="text/css" href="index.css"></head>\n')
     f.close()
 
 
@@ -24,11 +22,11 @@ def createIndex(fam,indi):
     f.write('<h1> Ficheiro: ' + filename + '</h1>')
     f.write('<div class="row"><div class="column"><h2>Familias</h2>')
     for keyf in fam:
-        f.write('<li> <a href=\"'+famPath+'/'+keyf+'.html\">'+keyf+'</a></li>\n')
+        f.write('<li> <a href=\"'+famPath+'/'+keyf+'\">'+keyf+'</a></li>\n')
     f.write('</ul> </div>')
     f.write('<div class="column"><h2>Individuos</h2>')
     for keyi in indi:
-        f.write('<li> <a href=\"'+indPath+'/'+keyi+'.html\">'+keyi+'</a></li>\n')
+        f.write('<li> <a href=\"'+indPath+'/'+keyi+'\">'+keyi+'</a></li>\n')
     f.write('</ul></div></div>')
     f.close()
     
