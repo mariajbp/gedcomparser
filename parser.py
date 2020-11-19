@@ -6,43 +6,42 @@ from re import *
 from pickle import *
 from getopt import getopt
 
-
-
 filename = sys.argv[1].split('/')[1]
-assetPath = "assets"
 indPath = "individuals"
 famPath = "families"
-cssPath = "assets/gedcom.css"
 
-def gTree(n):
-    nome = BG[n]['Name']
-    #print(nome)
-    for i in BG[n]['Fams']:
-        for f in BF[i]['Children']:
-            filho = BG[f]['Name'] 
-            #print("\t", filho)
 
 def createIndi(ik,iv):
+    wife = husband = wn = hn = ""
     f = open('assets/individuals/'+ik+'.html', 'w')
-    f.write('<h4> <a href=\"../index.html\"> return to index </a> </h4>')
-    f.write('<!DOCTYPE html><html><head> <link rel="stylesheet" type="text/css" href="../index.css"></head>\n')
-    f.write('<h1> Individuo: ' + ik + '</h1>')
-    for k, v in iv.items():
-        f.write('<b>'+str(k) + ':</b> '+ str(v) + '\n')
+    f.write('<!DOCTYPE html>\n<html>\n<head>\n\t<title>'+ik+'</title>\n\t<link rel="stylesheet" type="text/css" href="../index.css">\n</head>\n')
+    f.write('<body>\n')
+    f.write('\t<h4><a href=\"../index.html\"> return to index</a></h4>\n')
+    f.write('\t<h1>Individuo: ' + ik + '</h1>\n')
 
-    #nome = BG[ik]['Name']
-    #f.write('<p><b> >> Spouse: </b>' +nome)
-    
+    for k, v in iv.items():
+        f.write('\t<b>'+str(k) + ':</b> '+ str(v) + ' <br>\n')
+
+    f.write('\t<div class="tree">\n\t\t<ul>\n\t\t\t<li>\n')
+
     for i in BG[ik]['Fams']:
         if 'Wife' in BF[i]:
             wife = BF[i]['Wife']
-            f.write("<p><b> >> Wife: </b>"+ BG[wife]['Name']+'</p>')
+            wn = BG[wife]['Name']
         if 'Husband' in BF[i]:
             husband = BF[i]['Husband']
-            f.write("<p><b> >> Husband: </b>"+ BG[husband]['Name']+'</p>')
+            hn = BG[husband]['Name']
+        f.write('\t\t\t\t<a href="#'+'">'+ wn + ' & ' + hn + '</a>\n')
+        f.write('\t\t\t\t<ul>\n')
+
         for j in BF[i]['Children']:
             filho = BG[j]['Name'] 
-            f.write("<p><b> >> Child: </b>"+ filho+'</p>')
+            f.write('\t\t\t\t\t<li><a href="'+j+'.html">'+ filho +'</a></li>\n')
+
+        f.write('\t\t\t\t</ul>\n')
+
+    f.write('\t\t\t</li>\n\t\t</ul>\n\t</div>\n')
+    f.write('</body>\n</html>')
     f.close()
 
 def createFamily(fk,fi):
@@ -53,7 +52,6 @@ def createFamily(fk,fi):
     for k, v in fi.items():
        f.write('<b>'+str(k) + ':</b> '+ str(v) +'\r\n')
     f.close()
-
 
 def createIndex(fam,indi):
     f = open("assets/index.html", 'w')
@@ -86,7 +84,6 @@ def procIndi(s,i):
         indi['Gender'] = gender.group(1)
     BG[s] = indi 
     
-    
 
 BF = {}
 def procFam(f,i):
@@ -113,19 +110,17 @@ def process(t):
             procFam(f.group(1),i)
 
 
-
 with open(sys.argv[1], 'r') as f :
     gedcom = f.read()
     process(gedcom)
     createIndex(BF.keys(), BG.keys())
     for k,v in BG.items():
         createIndi(k,v)
-        gTree(k)
     for kf,vf in BF.items():  
         createFamily(kf,vf)
     #print("\nINDIVIDUOS\n", BG )
     #print("\n\n\n\n\n")
-    print("\nFAMILIAS\n", BF)
+    #print("\nFAMILIAS\n", BF)
    
     
         

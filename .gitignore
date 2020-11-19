@@ -1,0 +1,5 @@
+assets/families/*
+*.DS_Store
+.history/*
+assets/individuals/*
+
